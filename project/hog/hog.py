@@ -182,18 +182,17 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     "*** YOUR CODE HERE ***"
     while score0 < goal and score1 < goal:
         # print(who)
+        keep_my_turn = 1 # slight improvement
         if who: # current turn is player 1
-            num_rolls = strategy1(score1, score0)
-            score1 += take_turn(num_rolls, score0, dice)
-            while extra_turn(score1, score0) and score0 < goal and score1 < goal:
+            while keep_my_turn:
                 num_rolls = strategy1(score1, score0)
                 score1 += take_turn(num_rolls, score0, dice)
+                keep_my_turn = extra_turn(score1, score0) and score0 < goal and score1 < goal
         else: 
-            num_rolls = strategy0(score0, score1)
-            score0 += take_turn(num_rolls, score1, dice)
-            while extra_turn(score0, score1) and score0 < goal and score1 < goal:
+            while keep_my_turn:
                 num_rolls = strategy0(score0, score1)
                 score0 += take_turn(num_rolls, score1, dice)
+                keep_my_turn = extra_turn(score0, score1) and score0 < goal and score1 < goal
         # print(score0, score1)
         who = other(who)
 
