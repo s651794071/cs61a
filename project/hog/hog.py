@@ -287,17 +287,15 @@ def announce_highest(who, last_score=0, running_high=0):
     # BEGIN PROBLEM 7
     def say(score0, score1):
         if who:
-            if score1 - last_score > running_high:
-                print(score1 - last_score, "point(s)! The most yet for Player", who)
-                return announce_highest(who, score1, score1 - last_score)
-            else:
-                return announce_highest(who, score1, running_high)
+            gap = score1 - last_score
+            if gap > running_high:
+                print(gap, "point(s)! The most yet for Player", who)
+            return announce_highest(who, score1, max(gap, running_high))
         else:
-            if score0 - last_score > running_high: 
-                print(score0 - last_score, "point(s)! The most yet for Player", who)
-                return announce_highest(who, score0, score0 - last_score)
-            else:
-                return announce_highest(who, score0, running_high)
+            gap = score0 - last_score
+            if gap > running_high: 
+                print(gap, "point(s)! The most yet for Player", who)
+            return announce_highest(who, score0, max(gap, running_high))
     return say
     # END PROBLEM 7
 
