@@ -146,7 +146,16 @@ def count_coins(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(n, lowest):
+        if lowest == None: # 没有比25更大的
+            return 0
+        elif n < lowest:
+            return 0
+        elif n == lowest:
+            return 1
+        return helper(n - lowest, lowest) + helper(n, next_largest_coin(lowest))
 
+    return helper(total, 1)
 
 from operator import sub, mul
 
