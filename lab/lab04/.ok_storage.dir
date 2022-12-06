@@ -3,3 +3,4 @@
 'paths-correct', (1024, 66)
 'max_subseq-correct', (1536, 66)
 'List Indexing-correct', (2048, 66)
+'add_chars-correct', (2560, 66)
