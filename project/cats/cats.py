@@ -98,7 +98,20 @@ def autocorrect(user_word, valid_words, diff_function, limit):
     than LIMIT.
     """
     # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
+    if user_word in valid_words:
+        return user_word
+    else:
+        mn = 100
+        res = ""
+        for vw in valid_words:
+            diff = diff_function(user_word, vw, limit)
+            if mn > diff:
+                mn = diff 
+                res = vw 
+        if mn > limit:
+            return user_word
+        else:
+            return res
     # END PROBLEM 5
 
 
@@ -108,7 +121,19 @@ def shifty_shifts(start, goal, limit):
     their lengths.
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    def helper(start, goal, cnt):
+        if start == '':
+            return len(goal)
+        elif goal == '':
+            return len(start)
+            
+        if cnt == limit + 1:
+            return limit + 1
+        if start[0] != goal[0]:
+            return helper(start[1:], goal[1:], cnt + 1) + 1
+        else:    
+            return helper(start[1:], goal[1:], cnt) 
+    return helper(start, goal, 0)
     # END PROBLEM 6
 
 
@@ -148,7 +173,16 @@ def final_diff(start, goal, limit):
 def report_progress(typed, prompt, user_id, send):
     """Send a report of your id and progress so far to the multiplayer server."""
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    progress = 0
+    count = 0
+    for i in range(len(typed)):
+        if typed[i] == prompt[i]:
+            count += 1
+        else:
+            break
+    progress = count / len(prompt)
+    send({'id': user_id, 'progress': progress})
+    return progress
     # END PROBLEM 8
 
 
@@ -174,7 +208,8 @@ def time_per_word(times_per_player, words):
         words: a list of words, in the order they are typed.
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    return game(words, [[times_per_player[i][j] - times_per_player[i][j - 1] for j in range(1, len(times_per_player[i]))] for i in range(len(times_per_player))])
+    
     # END PROBLEM 9
 
 
