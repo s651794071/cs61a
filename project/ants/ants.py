@@ -163,7 +163,8 @@ class ThrowerAnt(Ant):
     damage = 1
     food_cost = 3
     # ADD/OVERRIDE CLASS ATTRIBUTES HERE
-
+    min_range = 0
+    max_range = float('inf')
     def nearest_bee(self, beehive):
         """Return the nearest Bee in a Place that is not the HIVE (beehive), connected to
         the ThrowerAnt's Place by following entrances.
@@ -172,10 +173,12 @@ class ThrowerAnt(Ant):
         """
         # BEGIN Problem 3 and 4
         place = self.place
-        while place != beehive:
-            if len(place.bees) > 0:
+        step = 0
+        while place != beehive :
+            if self.min_range <= step <= self.max_range and len(place.bees) > 0:
                 return rANTdom_else_none(place.bees)
             place = place.entrance
+            step += 1
         return None
         # END Problem 3 and 4
 
@@ -205,7 +208,9 @@ class ShortThrower(ThrowerAnt):
     food_cost = 2
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    max_range=3
+
     # END Problem 4
 
 class LongThrower(ThrowerAnt):
@@ -215,7 +220,9 @@ class LongThrower(ThrowerAnt):
     food_cost = 2
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    min_range = 5
+
     # END Problem 4
 
 class FireAnt(Ant):
@@ -226,7 +233,7 @@ class FireAnt(Ant):
     food_cost = 5
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 5
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem 5
 
     def __init__(self, armor=3):
@@ -241,7 +248,16 @@ class FireAnt(Ant):
         if the fire ant dies.
         """
         # BEGIN Problem 5
-        "*** YOUR CODE HERE ***"
+        bees = self.place.bees # 必须放在火蚁被伤之前，因为火蚁有可能被打死，self.place就是None了
+        temp_bees = bees[:]
+        Ant.reduce_armor(self, amount)
+
+        for tbee in temp_bees:
+            for bee in bees:
+                if bee == tbee:
+                    bee.reduce_armor(amount + (0 if self.armor > 0 else self.damage))
+                    break
+  
         # END Problem 5
 
 class HungryAnt(Ant):
