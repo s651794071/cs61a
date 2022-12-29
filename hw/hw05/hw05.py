@@ -141,6 +141,11 @@ def store_digits(n):
     >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
     """
     "*** YOUR CODE HERE ***"
+    res = Link.empty
+    while n:
+        res = Link(n % 10, res)
+        n //= 10
+    return res
 
 
 def is_bst(t):
@@ -169,7 +174,37 @@ def is_bst(t):
     False
     """
     "*** YOUR CODE HERE ***"
+    # t is bst <=> 
+    # t.left is bst and t.right is bst 
+    # AND bst_max(t.left) < t.label and bst_min(t.right) > t.label
+    if t.is_leaf():
+        return True
+    if len(t.branches) > 2:
+        return False
+    elif len(t.branches) == 1:
+        return is_bst(t.branches[0]) and (bst_max(t.branches[0]) <= t.label or bst_min(t.branches[0]) >= t.label)
+    else: 
+        return is_bst(t.branches[0]) and is_bst(t.branches[1]) and bst_max(t.branches[0]) <= t.label and bst_min(t.branches[1]) >= t.label
 
+def bst_max(t):
+    def dfs(t, label):
+        if t.is_leaf():
+            return max(t.label, label)
+        mx = max(t.label, label)
+        for b in t.branches:
+            mx = dfs(b, mx)
+        return mx
+    return dfs(t, t.label)
+
+def bst_min(t):
+    def dfs(t, label):
+        if t.is_leaf():
+            return min(t.label, label)
+        mn = min(t.label, label)
+        for b in t.branches:
+            mn = dfs(b, mn)
+        return mn
+    return dfs(t, t.label)
 
 def preorder(t):
     """Return a list of the entries in this tree in the order that they
